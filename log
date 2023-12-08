@@ -1,0 +1,27 @@
+  # pandas 를 사용함
+  # socket notifier can't be enabled or disabled with QTread blahblah
+  # python3 -m venv venv100
+  # venv100/bin/pip install Orange3 pyqt5 pyqtwebengine
+  # copy icon file from share/icons/*
+  # cp 에  시간이 걸리니까 나중에 cp 대신 진행상태도 보여주는 커맨드로 변경해보자.
+  # python3 -m venv venv12/usr
+  # portable python 내용을  merge 하고 venv12/usr/bin/pip venv12/usr/bin/python3 이 제대로 작동하는지 확인
+  # venv12/usr/bin/pip install Orange3 pyqt5 pyqtwebengine python3-pyqt5 python3-pyqt5-headless
+  # venv12/usr/bin/python -m Orange.canvas 확인
+  # 아이콘 복사
+  # xhost +
+  # docker run -it --name=test2 --device /dev/fuse --env="DISPLAY" --net=host --privileged ubuntu:23.04 
+  # docker cp ./orange-canvas test2:/root/
+  # 이후 컨테이너 안에서 ./orange-canvas 를 하면서 에러가 나올 때마다 우분투 시스템 패키지를 찾아 설치하고, 현재의 결과
+  # 이후 임시로 Orange.canvas 안의 의심되는 기능들을 임시로 비활성화. venv11
+  # https://stackoverflow.com/questions/64570272/reading-and-writing-qtcpsockets-through-different-threads-throws-qsocketnotifier
+  # 이후의  appimage 는 docker 안에서 테스트먼저 하는 방식으로 진행하자.
+  #  그럼에도 불구하고, .py 처럼 소스코드 실행은 되나 appimage 로 실행은 안되는 시나리오도 분명 있음을 유념하자.
+  # 다른 이미지들은 거의 항상 되는데, 우분투xenial 만 혼자 없는 게 너무 많다.
+  # fuse 는 앱이미지에  포함시킬 수 없다. 그러니까 테스트용으로 fuse 만 포함한 이미지를 새로 만들어두자. 우분투에서의 이름은 libfuse2 이다
+  # ubuntu 2304 에서 매뉴얼 테스트 통과하였다. 하지만  appimage-builder 를 통한 테스트는 useradd: UID 1000 is not unique 에러로 통과하지 못하였다. 2304 용 테스트 이미지를 나중에 만들던가 하자. 자세한 에러 메시지는 에러로그에 기록하였음
+  
+  
+#231206 
+libpython3-minimal 과 python3-minimal 을 packages.debian.org 에서 받아 합쳐서 venv11에 통합하였고 잘 작동한다. 이상하게도 pkgs.org 의 lib은 lib/python3.10/encodings 를 비릇한 몇가지 파일이 유실되어 있고 이는 'no module not found: encodings' error를 출력하였었다.
+

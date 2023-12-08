@@ -1,0 +1,67 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+script:
+  # Remove any previous build
+  # needed to close all ff and do sudo systemctl stop snapd.socket
+
+  # - xhost +
+  - rm -rf AppDir  | true
+  - rm -rf appimage-build
+  - rm -rf venv11/usr/bin/__pycache__
+  - mkdir -p AppDir/usr
+  - cp -r venv11/* AppDir/usr/
+AppDir:
+  path: ./AppDir
+  app_info:
+    id: test
+    name: test
+    icon: test
+    version: 3.36.1
+    # Set the python executable as entry point
+    exec: usr/bin/python3
+    # Set the application main script path as argument. Use '$@' to forward CLI parameters
+    # exec_args: "-m Orange.canvas"
+    exec_args: "$APPDIR/usr/test.py"
+  apt:
+    arch: amd64
+    allow_unauthenticated: true
+    sources:
+      - sourceline: deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
+      - sourceline: deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
+    include:
+    - libc6
+ 
+    exclude: []
+
+#  runtime:
+#    env:
+  test:
+
+    fedora-30:
+      image: appimagecrafters/tests-env:fedora-30
+      #command: env XDG_RUNTIME_DIR=/run/user/1000 bash -c './AppRun'
+      command: ./AppRun
+      #use_host_x: True
+      #env:
+        #QT_DEBUG_PLUGINS: 1 
+        # LD_DEBUG: libs
+    debian-stable:
+      image: appimagecrafters/tests-env:debian-stable
+      command: ./AppRun
+      use_host_x: true
+    archlinux-latest:
+      image: appimagecrafters/tests-env:archlinux-latest
+      command: ./AppRun
+      use_host_x: true
+    centos-7:
+      image: appimagecrafters/tests-env:centos-7
+      command: ./AppRun
+    ubuntu-xenial:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+      use_host_x: true
+    
+AppImage:
+  arch: x86_64
+  update-information: None
+  sign-key: None
